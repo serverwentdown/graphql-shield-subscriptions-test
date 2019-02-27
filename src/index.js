@@ -1,5 +1,5 @@
-import { GraphQLServer, PubSub } from 'graphql-yoga'
-import { rule, shield, and, or, not } from 'graphql-shield'
+import { GraphQLServer, PubSub } from "graphql-yoga";
+import { rule, shield, and, or, not } from "graphql-shield";
 
 const typeDefs = `
   type Query {
@@ -17,7 +17,7 @@ const typeDefs = `
   type Todo {
     text: String!
   }
-`
+`;
 
 const pubsub = new PubSub();
 
@@ -49,26 +49,29 @@ const resolvers = {
 const users = {
   mathew: {
     id: 1,
-    name: 'Mathew',
-    role: 'editor',
+    name: "Mathew",
+    role: "editor",
   },
   george: {
     id: 2,
-    name: 'George',
-    role: 'editor',
+    name: "George",
+    role: "editor",
   },
   johnny: {
     id: 3,
-    name: 'Johnny',
-    role: 'reader',
+    name: "Johnny",
+    role: "reader",
   },
-}
+};
 
 function getUser(req) {
-  console.log('in getUser', req.request ? 'request exists' : 'request does not exist');
-  const auth = req.request.get('Authorization')
+  console.log(
+    "in getUser",
+    req.request ? "request exists" : "request does not exist"
+  );
+  const auth = req.request.get("Authorization");
   if (users[auth]) {
-    return users[auth]
+    return users[auth];
   } else {
     return null;
   }
@@ -77,12 +80,15 @@ function getUser(req) {
 // Rules
 
 const isAuthenticated = rule()(async (parent, args, ctx, info) => {
-  console.log('in isAuthenticated', ctx.request ? 'request exists' : 'request does not exist');
-  return ctx.user !== null
+  console.log(
+    "in isAuthenticated",
+    ctx.request ? "request exists" : "request does not exist"
+  );
+  return ctx.user !== null;
 });
 
 const isEditor = rule()(async (parent, args, ctx, info) => {
-  return ctx.user.role === 'editor'
+  return ctx.user.role === "editor";
 });
 
 // Permissions
@@ -97,7 +103,7 @@ const permissions = shield({
   Subscription: {
     todos: isAuthenticated,
   },
-})
+});
 
 const server = new GraphQLServer({
   typeDefs,
@@ -108,6 +114,6 @@ const server = new GraphQLServer({
     pubsub,
     user: getUser(req),
   }),
-})
+});
 
-server.start(() => console.log('Server is running on http://localhost:4000'))
+server.start(() => console.log("Server is running on http://localhost:4000"));

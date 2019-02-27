@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "graphql-shield": "^5.3.0",
-    "graphql-yoga": "^1.17.4"
+    "graphql-yoga": "^1.17.4",
+    "pretty-quick": "^1.10.0"
   },
   "scripts": {
     "build": "babel src --copy-files --out-dir lib",
