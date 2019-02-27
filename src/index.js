@@ -65,7 +65,7 @@ const users = {
 }
 
 function getUser(req) {
-  console.log(req.request ? 'request exists' : 'request does not exist');
+  console.log('in getUser', req.request ? 'request exists' : 'request does not exist');
   const auth = req.request.get('Authorization')
   if (users[auth]) {
     return users[auth]
@@ -77,6 +77,7 @@ function getUser(req) {
 // Rules
 
 const isAuthenticated = rule()(async (parent, args, ctx, info) => {
+  console.log('in isAuthenticated', ctx.request ? 'request exists' : 'request does not exist');
   return ctx.user !== null
 });
 
